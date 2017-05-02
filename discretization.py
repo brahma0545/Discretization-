@@ -85,9 +85,8 @@ def algorithm(values):
     points = boundary_points(centers)
     cluster_array = clusters(values, points)
     update_cluster = update_clusters(cluster_array, values, centers)
-    final_tk = boundary_points(centers)
 
-    return update_cluster, final_tk
+    return update_cluster, points
 
 
 def get_the_values(data):
