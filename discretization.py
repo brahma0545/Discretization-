@@ -47,16 +47,6 @@ def update_clusters(cluster_array, values, centers):
     return cluster_array
 
 
-def algorithm(values):
-    centers = get_the_centers(values)
-    points = boundary_points(centers)
-    cluster_array = clusters(values, points)
-    update_cluster = update_clusters(cluster_array, values, centers)
-    final_tk = boundary_points(centers)
-
-    return update_cluster, final_tk
-
-
 def build_a_matrix(update_cluster):
     A = []
     cluster_len = len(update_cluster)
@@ -68,28 +58,6 @@ def build_a_matrix(update_cluster):
         else:
             A = np.vstack((A, temp))
     return A
-
-
-def get_the_values(data):
-    A = []
-    for i in range(294):
-        numpy_array = np.array(data[i].get_values())
-        update_cluster, final_tk = algorithm(numpy_array)
-        A_attribute = build_a_matrix(update_cluster)
-        if len(A) == 0:
-            A = A_attribute
-        else:
-            A = np.hstack((A, A_attribute))
-
-    X = []
-    for i in range(294, 300):
-        numpy_array = np.array(data[i].get_values())
-        if len(X) == 0:
-            X = numpy_array
-        else:
-            X = np.vstack((X, numpy_array))
-
-    return A, X
 
 
 def update_m_matrix(A, X):
@@ -110,6 +78,38 @@ def normalize_m_matrix(M, X):
         sum_x = np.sum(X[i])
         M[i] /= sum_x
     return M
+
+
+def algorithm(values):
+    centers = get_the_centers(values)
+    points = boundary_points(centers)
+    cluster_array = clusters(values, points)
+    update_cluster = update_clusters(cluster_array, values, centers)
+    final_tk = boundary_points(centers)
+
+    return update_cluster, final_tk
+
+
+def get_the_values(data):
+    A = []
+    for i in range(294):
+        numpy_array = np.array(data[i].get_values())
+        update_cluster, final_tk = algorithm(numpy_array)
+        A_attribute = build_a_matrix(update_cluster)
+        if len(A) == 0:
+            A = A_attribute
+        else:
+            A = np.hstack((A, A_attribute))
+    X = []
+    for i in range(294, 300):
+        numpy_array = np.array(data[i].get_values())
+        if len(X) == 0:
+            X = numpy_array
+        else:
+            X = np.vstack((X, numpy_array))
+
+    return A, X
+
 
 if __name__ == '__main__':
     data = pd.read_csv('data/scene-train.arff', header=None)
