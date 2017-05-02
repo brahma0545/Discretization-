@@ -110,10 +110,26 @@ def get_the_values(data):
     return A, X
 
 
+def multiply_matrices(M, A, X):
+    row, col = A.shape
+    sum=0
+    print (X.shape)
+    for i in range(row):
+        P = M.dot(A[i].T)
+        P /= np.max(P)
+        Y = (P > 0.85).astype(int)
+        sum += float((np.sum(X.T[i] ^ Y)))/6
+        # print sum
+    return sum/row
+
+
 if __name__ == '__main__':
     data = pd.read_csv('data/scene-train.arff', header=None)
     A, X = get_the_values(data)
+    print(A.shape)
     M = update_m_matrix(A, X)
     M = normalize_m_matrix(M, X)
-    print M
+    print multiply_matrices(M, A, X)
+    # print M
+    print(M.shape)
 
