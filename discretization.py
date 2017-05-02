@@ -98,10 +98,7 @@ def update_m_matrix(A, X):
     row, col = X.shape
     for i in range(row):
         indices = np.nonzero(X[i])
-        # print indices
         for index in indices:
-            # print A[index].shape
-            # print np.sum(A[index], axis=0)
             sum_a = np.sum(A[index], axis=0)
             M[i] += sum_a
     return M
