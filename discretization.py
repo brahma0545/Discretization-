@@ -89,7 +89,7 @@ def get_the_values(data):
         else:
             X = np.vstack((X, numpy_array))
 
-    return A, X.T
+    return A, X
 
 
 def update_m_matrix(A, X):
@@ -98,17 +98,20 @@ def update_m_matrix(A, X):
     row, col = X.shape
     for i in range(row):
         indices = np.nonzero(X[i])
+        # print indices
         for index in indices:
-            M[index] = M[index] + A[index]
+            # print A[index].shape
+            # print np.sum(A[index], axis=0)
+            sum_a = np.sum(A[index], axis=0)
+            M[i] += sum_a
     return M
 
 
 def normalize_m_matrix(M, X):
-    row, col = X.shape
+    row, col = M.shape
     for i in range(row):
-        indices = np.nonzero(X[i])
-        indices_len = len(indices)
-        
+        sum_x = np.sum(X[i])
+        M[i] /= sum_x
     return M
 
 if __name__ == '__main__':
